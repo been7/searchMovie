@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Search MOVIE!</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        font-family: "Gowun Dodum", sans-serif;
+      }
+
+      .mytitle {
+        width: 100%;
+        height: 350px;
+
+        background-image: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+          ),
+          url("https://htmlcolorcodes.com/assets/images/colors/black-color-solid-background-1920x1080.png");
+        background-position: center;
+        background-size: cover;
+
+        color: white;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .mytitle > h1 {
+        margin-bottom: 60px;
+      }
+
+      .mytitle > button {
+        width: 100px;
+        height: 50px;
+
+        background-color: transparent;
+        color: white;
+
+        border-radius: 50px;
+        border: 2px solid white;
+
+        margin-top: 10px;
+      }
+
+      .mytitle > button:hover {
+        border: 4px solid white;
+      }
+
+      #searchText {
+        height: 40px;
+      }
+
+      .mycards {
+        margin: 20px auto 0px auto;
+        width: 95%;
+        max-width: 1200px;
+      }
+    </style>
+    <script>
+      // TMDB API로 데이터 가져오기
+      const getMovies = async () => {
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk1YmYxMDY5NzE1OTNkNzE1NzIwOTFkOTIwZmE0YSIsInN1YiI6IjY0NzBjNzhhMTNhMzIwMDBmOWFmYzcyMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RwbgGoocuoBb2hzT1gqADrIi0MjxOu-Isz2ohmnKbEs",
+          },
+        };
+
+        fetch(
+          "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+          options
+        )
+          .then((response) => response.json())
+          .then((response) => {
+            let result = response["results"]; //forEach로 원하는 데이터 가져와야함.
+            result.forEach((a) => {
+              let title = a["title"];
+              let overview = a["overview"];
+              let posterPath =
+                "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
+              let voteAverage = a["vote_average"]; // console.log 수시로 찍어보기!!
+
+              let temp_html = `<div class="col">
+                                        <div class="card h-100">
+                                            <img src="${posterPath}"
+                                                class="card-img-top">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${title}</h5>
+                                                <p class="card-text">${overview}</p>
+                                                <p class="mycomment">${voteAverage}</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+              $("#cards-box").append(temp_html);
+            });
+          })
+          .catch((err) => console.error(err));
+      };
+
+      // 검색 기능
+      window.onload = function () {
+        searchBtn.addEventListener("click", getMovieText);
+      };
+
+      const getMovieText = async () => {
+        let text = document.getElementById("searchText").value;
+
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk1YmYxMDY5NzE1OTNkNzE1NzIwOTFkOTIwZmE0YSIsInN1YiI6IjY0NzBjNzhhMTNhMzIwMDBmOWFmYzcyMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RwbgGoocuoBb2hzT1gqADrIi0MjxOu-Isz2ohmnKbEs",
+          },
+        };
+
+        fetch(
+          "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+          options
+        )
+          .then((response) => response.json())
+          .then((response) => {
+            let result = response["results"];
+            result.forEach((a) => {
+              let title = a["title"];
+              let overview = a["overview"];
+              let posterPath =
+                "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
+              let voteAverage = a["vote_average"];
+
+              if (title === text) {
+                const div = document.querySelector("div#cards-box");
+                while (div.firstChild) {
+                  div.removeChild(div.firstChild);
+                }
+                let temp_html = `<div class="col">
+                                    <div class="card h-100">
+                                        <img src="${posterPath}"
+                                            class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${title}</h5>
+                                            <p class="card-text">${overview}</p>
+                                            <p class="mycomment">${voteAverage}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                $("#cards-box").append(temp_html);
+                console.log(temp_html);
+              }
+            });
+          })
+          .catch((err) => console.error(err));
+      };
+
+      // 영화 목록 띄우기
+      getMovies();
+    </script>
+  </head>
+
+  <body>
+    <div class="mytitle">
+      <h1>영화 검색하기</h1>
+      <input
+        id="searchText"
+        type="TEXT"
+        name="movieName"
+        size="50"
+        placeholder="영화 제목을 입력하세요."
+      />
+      <button id="searchBtn">검색</button>
+    </div>
+    <div class="mycards">
+      <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        <!-- <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+              class="card-img-top"
+            />
+            <div class="card-body">
+              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
+              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
+              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+              class="card-img-top"
+            />
+            <div class="card-body">
+              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
+              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
+              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+              class="card-img-top"
+            />
+            <div class="card-body">
+              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
+              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
+              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+              class="card-img-top"
+            />
+            <div class="card-body">
+              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
+              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
+              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </body>
+</html>
