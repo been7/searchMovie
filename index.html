@@ -105,13 +105,14 @@
             let result = response["results"];
             result.forEach((a) => {
               // 배열 메소드
+              let id = a["id"];
               let title = a["title"];
               let overview = a["overview"];
               let posterPath =
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              let temp_html = `<div class="col">
+              let temp_html = `<div class="col" onclick="alert(${id})">
                                         <div class="card h-100">
                                             <img src="${posterPath}"
                                                 class="card-img-top">
@@ -129,6 +130,9 @@
           })
           .catch((err) => console.error(err));
       };
+
+      // 영화 목록 띄우기
+      getMovies();
 
       // 검색 기능
       window.onload = function () {
@@ -161,17 +165,27 @@
             }
             result.forEach((a) => {
               // 배열 메소드
+              let id = a["id"];
               let title = a["title"];
               let overview = a["overview"];
               let posterPath =
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              // 검색어(text)를 포함하는 영화 제목을 찾아서 isFound에 저장
-              let isFound = title.toUpperCase().includes(text.toUpperCase());
+              function as() {
+                if (title.includes(text) === true) {
+                  return true;
+                  console.log("true");
+                } else {
+                  return false;
+                  console.log("false");
+                }
+              }
+
+              let isFound = title.includes(text);
 
               if (isFound === true) {
-                let temp_html = `<div class="col">
+                let temp_html = `<div class="col" onclick="alert(${id})">
                                     <div class="card h-100">
                                         <img src="${posterPath}"
                                             class="card-img-top">
@@ -190,9 +204,6 @@
           })
           .catch((err) => console.error(err));
       };
-
-      // 영화 목록 띄우기
-      getMovies();
     </script>
   </head>
 
