@@ -167,7 +167,8 @@
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              let isFound = title.includes(text);
+              // 검색어(text)를 포함하는 영화 제목을 찾아서 isFound에 저장
+              let isFound = title.toUpperCase().includes(text.toUpperCase());
 
               if (isFound === true) {
                 let temp_html = `<div class="col">
