@@ -52,6 +52,7 @@
         align-items: center;
         justify-content: center;
       }
+
       .mytitle > h1 {
         margin-bottom: 60px;
       }
@@ -101,13 +102,14 @@
         )
           .then((response) => response.json())
           .then((response) => {
-            let result = response["results"]; //forEach로 원하는 데이터 가져와야함.
+            let result = response["results"];
             result.forEach((a) => {
+              // 배열 메소드
               let title = a["title"];
               let overview = a["overview"];
               let posterPath =
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
-              let voteAverage = a["vote_average"]; // console.log 수시로 찍어보기!!
+              let voteAverage = a["vote_average"];
 
               let temp_html = `<div class="col">
                                         <div class="card h-100">
@@ -120,7 +122,9 @@
                                             </div>
                                         </div>
                                     </div>`;
-              $("#cards-box").append(temp_html);
+              // cards-box에 temp_html 집어넣기
+              let element = document.querySelector("#cards-box"); // DOM 제어
+              element.insertAdjacentHTML("beforeend", temp_html);
             });
           })
           .catch((err) => console.error(err));
@@ -128,11 +132,11 @@
 
       // 검색 기능
       window.onload = function () {
-        searchBtn.addEventListener("click", getMovieText);
+        searchBtn.addEventListener("click", getMovieText); // DOM 제어
       };
 
       const getMovieText = async () => {
-        let text = document.getElementById("searchText").value;
+        let text = document.getElementById("searchText").value; // DOM 제어
 
         const options = {
           method: "GET",
@@ -151,17 +155,23 @@
           .then((response) => {
             let result = response["results"];
             result.forEach((a) => {
+              // 배열 메소드
               let title = a["title"];
               let overview = a["overview"];
               let posterPath =
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              if (title === text) {
-                const div = document.querySelector("div#cards-box");
+              // 검색어 포함된 마지막 값만 출력됩니다..
+              let isFound = title.includes(text);
+              console.log(isFound);
+
+              if (isFound === true) {
+                const div = document.querySelector("div#cards-box"); // DOM 제어
                 while (div.firstChild) {
                   div.removeChild(div.firstChild);
                 }
+
                 let temp_html = `<div class="col">
                                     <div class="card h-100">
                                         <img src="${posterPath}"
@@ -173,8 +183,9 @@
                                         </div>
                                     </div>
                                 </div>`;
-                $("#cards-box").append(temp_html);
-                console.log(temp_html);
+                // cards-box에 temp_html 집어넣기
+                let element = document.querySelector("#cards-box"); // DOM 제어
+                element.insertAdjacentHTML("beforeend", temp_html);
               }
             });
           })
