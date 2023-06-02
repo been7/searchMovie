@@ -178,8 +178,8 @@
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              let temp_html = `<div class="col" onclick="alert('영화 ID: ' + ${id})">
-                                    <div class="card h-100">
+              let temp_html = `<div class="col">
+                                    <div class="card h-100" onclick="alert('영화 ID: ' + ${id})">
                                         <img src="${posterPath}"
                                             class="card-img-top">
                                         <div class="card-body">
