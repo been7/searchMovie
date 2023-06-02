@@ -82,6 +82,7 @@
         margin: 20px auto 0px auto;
         width: 95%;
         max-width: 1200px;
+        text-align: center;
       }
     </style>
     <script>
@@ -112,8 +113,8 @@
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              let temp_html = `<div class="col" onclick="alert(${id})">
-                                        <div class="card h-100">
+              let temp_html = `<div class="col">
+                                        <div class="card h-100" onclick="alert('영화 ID: ' + ${id})">
                                             <img src="${posterPath}"
                                                 class="card-img-top">
                                             <div class="card-body">
@@ -163,8 +164,15 @@
             while (div.firstChild) {
               div.removeChild(div.firstChild);
             }
-            result.forEach((a) => {
-              // 배열 메소드
+
+            let sameResult = result.filter((a) => {
+              let title = a["title"];
+              let upTitle = title.toUpperCase();
+              let upText = text.toUpperCase();
+              return upTitle.includes(upText) === true;
+            });
+
+            sameResult.forEach((a) => {
               let id = a["id"];
               let title = a["title"];
               let overview = a["overview"];
@@ -172,10 +180,7 @@
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              let isFound = title.toUpperCase().includes(text.toUpperCase());
-
-              if (isFound === true) {
-                let temp_html = `<div class="col" onclick="alert(${id})">
+              let temp_html = `<div class="col" onclick="alert('영화 ID: ' + ${id})">
                                     <div class="card h-100">
                                         <img src="${posterPath}"
                                             class="card-img-top">
@@ -186,14 +191,19 @@
                                         </div>
                                     </div>
                                 </div>`;
-                // cards-box에 temp_html 집어넣기
-                let element = document.querySelector("#cards-box"); // DOM 제어
-                element.insertAdjacentHTML("beforeend", temp_html);
-              }
+              // cards-box에 temp_html 집어넣기
+              let element = document.querySelector("#cards-box"); // DOM 제어
+              element.insertAdjacentHTML("beforeend", temp_html);
             });
           })
           .catch((err) => console.error(err));
       };
+
+      function enterkey() {
+        if (window.event.keyCode == 13) {
+          getMovieText();
+        }
+      }
     </script>
   </head>
 
@@ -201,69 +211,18 @@
     <div class="mytitle">
       <h1>영화 검색하기</h1>
       <input
+        onkeyup="enterkey()"
         id="searchText"
         type="TEXT"
         name="movieName"
         size="50"
         placeholder="영화 제목을 입력하세요."
+        autofocus
       />
       <button id="searchBtn">검색</button>
     </div>
     <div class="mycards">
-      <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        <!-- <div class="col">
-          <div class="card h-100">
-            <img
-              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-              class="card-img-top"
-            />
-            <div class="card-body">
-              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
-              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
-              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img
-              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-              class="card-img-top"
-            />
-            <div class="card-body">
-              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
-              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
-              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img
-              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-              class="card-img-top"
-            />
-            <div class="card-body">
-              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
-              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
-              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img
-              src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-              class="card-img-top"
-            />
-            <div class="card-body">
-              <h5 class="card-title">영화 제목이 들어갑니다.</h5>
-              <p class="card-overview">여기에 영화에 대한 설명이 들어갑니다.</p>
-              <p class="card-voteAverage">영화 평점이 들어갑니다.</p>
-            </div>
-          </div>
-        </div> -->
-      </div>
+      <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box"></div>
     </div>
   </body>
 </html>
