@@ -172,17 +172,7 @@
                 "https://image.tmdb.org/t/p/w500/" + a["poster_path"];
               let voteAverage = a["vote_average"];
 
-              function as() {
-                if (title.includes(text) === true) {
-                  return true;
-                  console.log("true");
-                } else {
-                  return false;
-                  console.log("false");
-                }
-              }
-
-              let isFound = title.includes(text);
+              let isFound = title.toUpperCase().includes(text.toUpperCase());
 
               if (isFound === true) {
                 let temp_html = `<div class="col" onclick="alert(${id})">
