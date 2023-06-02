@@ -175,6 +175,10 @@
               return title.toUpperCase().includes(text.toUpperCase());
             });
 
+            if (text === "") {
+              alert("영화 제목을 입력하세요.");
+            }
+
             sameResult.forEach((a) => {
               let id = a["id"];
               let title = a["title"];
