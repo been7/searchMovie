@@ -167,9 +167,7 @@
 
             let sameResult = result.filter((a) => {
               let title = a["title"];
-              let upTitle = title.toUpperCase();
-              let upText = text.toUpperCase();
-              return upTitle.includes(upText) === true;
+              return title.toUpperCase().includes(text.toUpperCase()) === true;
             });
 
             sameResult.forEach((a) => {
