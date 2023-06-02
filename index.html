@@ -84,6 +84,11 @@
         max-width: 1200px;
         text-align: center;
       }
+
+      #image:hover {
+        border: 4px solid white;
+        cursor: pointer;
+      }
     </style>
     <script>
       // TMDB API로 데이터 가져오기
@@ -116,7 +121,7 @@
               let temp_html = `<div class="col">
                                         <div class="card h-100" onclick="alert('영화 ID: ' + ${id})">
                                             <img src="${posterPath}"
-                                                class="card-img-top">
+                                                class="card-img-top" id="image">
                                             <div class="card-body">
                                                 <h5 class="card-title">${title}</h5>
                                                 <p class="card-text">${overview}</p>
@@ -167,7 +172,7 @@
 
             let sameResult = result.filter((a) => {
               let title = a["title"];
-              return title.toUpperCase().includes(text.toUpperCase()) === true;
+              return title.toUpperCase().includes(text.toUpperCase());
             });
 
             sameResult.forEach((a) => {
@@ -181,7 +186,7 @@
               let temp_html = `<div class="col">
                                     <div class="card h-100" onclick="alert('영화 ID: ' + ${id})">
                                         <img src="${posterPath}"
-                                            class="card-img-top">
+                                            class="card-img-top" id="image">
                                         <div class="card-body">
                                             <h5 class="card-title">${title}</h5>
                                             <p class="card-text">${overview}</p>
